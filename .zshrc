@@ -8,8 +8,8 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-#ZSH_THEME="ys"
 ZSH_THEME="zeta"
+
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -72,12 +72,14 @@ ZSH_THEME="zeta"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-git
-cp
-copyfile
-copydir
-extract
-web-search
+	git
+	git-auto-fetch
+	cp
+    	copyfile
+	copypath
+	extract
+	web-search
+    	zsh-shift-select
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -107,6 +109,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
 
 # Invoke autocomple
 source <(inv --print-completion-script zsh)
@@ -115,8 +118,42 @@ source <(inv --print-completion-script zsh)
 alias cat="batcat"
 
 # exa
-alias ls="exa -alx --git --group-directories-first"
+export PATH=$PATH:$HOME/.cargo/bin
+alias ls="exa -aglx --git --group-directories-first"
 
-# diff-so-fancy
-export PATH=${PATH}:/opt/diff-so-fancy
+# Ambarella
+#export PATH=$PATH:/opt/amba/bin
 
+# z
+eval "$(zoxide init zsh)"
+
+
+# Linux version of OSX pbcopy and pbpaste.
+alias pbcopy="xsel --clipboard --input"
+alias pbpaste="xsel --clipboard --output"
+
+x-yank() {
+    zle copy-region-as-kill
+    print -rn -- $CUTBUFFER | pbcopy
+}
+zle -N x-yank
+
+x-cut() {
+    zle kill-region
+    print -rn -- $CUTBUFFER | pbcopy
+}
+zle -N x-cut
+
+x-paste() {
+    PASTE=$(pbpaste)
+    LBUFFER="$LBUFFER${RBUFFER:0:1}"
+    RBUFFER="$PASTE${RBUFFER:1:${#RBUFFER}}"
+}
+zle -N x-paste
+
+bindkey "^y" x-yank
+bindkey "^d" x-cut
+bindkey "^p" x-paste
+
+autoload bashcompinit
+bashcompinit
