@@ -9,9 +9,9 @@ sudo apt -y install git build-essential python3-dev python3-pip python3-venv pyt
 ########
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Mononoki.zip
 unzip Mononoki.zip -d ~/.fonts
-wget wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/UbuntuMono.zip
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/UbuntuMono.zip
 unzip UbuntuMono.zip -d ~/.fonts
-wget wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
 unzip FiraCode.zip -d ~/.fonts
 fc-cache -fv
 
@@ -24,34 +24,15 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools
 #########
 # i3 #
 #########
-
+sudo apt install i3 polybar
 
 #############
 # ALACRITTY #
 #############
-ALACRITTY_INSTALL_DIR=/opt
-
-sudo apt -y install cargo cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
-
-cd ${ALACRITTY_INSTALL_DIR}
-git clone https://github.com/alacritty/alacritty.git
-cd alacritty
-
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source $HOME/.cargo/env
-rustup override set stable
-rustup update stable
-cargo build --release
-
-sudo tic -xe alacritty,alacritty-direct extra/alacritty.info
-sudo ln -s ${ALACRITTY_INSTALL_DIR}/alacritty/target/release/alacritty /usr/local/bin
-sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
-sudo desktop-file-install extra/linux/Alacritty.desktop
-sudo update-desktop-database
-sudo mkdir -p /usr/local/share/man/man1
-gzip -c extra/alacritty.man | sudo tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
-gzip -c extra/alacritty-msg.man | sudo tee /usr/local/share/man/man1/alacritty-msg.1.gz > /dev/null
-
+sudo apt install wget apt-transport-https gnupg2 software-properties-common
+sudo add-apt-repository ppa:aslatter/ppa
+sudo apt update
+sudo apt install alacritty
 sudo apt -y install npm
 sudo npm i -g alacritty-themes
 alacritty-themes --create
