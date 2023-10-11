@@ -206,7 +206,7 @@ colors:
 theme: Afterglow
 
 shell:
-  program: /usr/bin/zsh
+  program: /usr/bin/bash #zsh
 
 #  args:
 #    - --login
